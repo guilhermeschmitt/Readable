@@ -13,8 +13,8 @@ export default function posts(state = {}, action) {
         [action.id]: {
           ...state[action.id],
           voteScore: action.option === "upVote"
-            ? state[action.id].voteScore++
-            : state[action.id].voteScore--
+            ? state[action.id].voteScore += 1
+            : state[action.id].voteScore -= 1
         }
       }
     default:

@@ -12,7 +12,6 @@ class PostsPage extends React.Component {
   }
 }
 
-
 function mapStateToProps({ posts }) {
   return {
     postsIds: Object.keys(posts)

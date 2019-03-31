@@ -13,7 +13,6 @@ class App extends Component {
     this.props.dispatch(handleInitialData())
   }
 
-
   //TODO: LOADING
   
   render() {

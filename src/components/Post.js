@@ -11,8 +11,7 @@ class Post extends React.Component {
   handleVote = (option, e) => {
     e.preventDefault();
 
-    const { dispatch, post } = this.props
-
+    const { dispatch, post } = this.props;
     dispatch(handleVotePost({
       id: post.id,
       option

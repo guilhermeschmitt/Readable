@@ -47,7 +47,7 @@ export const addPost = post =>
     body: JSON.stringify(post)
   }).then(res => res.json());
 
-export const voteOnAPost = (id, option) =>
+export const voteOnAPost = ({ id, option }) =>
   fetch(`${api}/posts/${id}`, {
     method: 'POST',
     headers: {
