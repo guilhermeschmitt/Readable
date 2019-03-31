@@ -5,8 +5,17 @@ import CategoryPostPage from './CategoryPostPage';
 import DetailedPostPage from './DetailedPostPage';
 import NewPostPage from './NewPostPage';
 import Nav from '../components/Nav';
+import { connect } from 'react-redux' 
+import { handleInitialData } from '../actions/shared' 
 
 class App extends Component {
+  componentDidMount() {
+    this.props.dispatch(handleInitialData())
+  }
+
+
+  //TODO: LOADING
+  
   render() {
     return (
       <Router>
@@ -24,4 +33,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default connect()(App);
