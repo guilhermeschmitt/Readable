@@ -1,13 +1,23 @@
-import { RECEIVE_POSTS } from '../actions/posts'
+import { RECEIVE_POSTS, VOTE_POST } from '../actions/posts'
 
-export default function posts (state = {}, action) {
-  switch(action.type) {
-    case RECEIVE_POSTS :
+export default function posts(state = {}, action) {
+  switch (action.type) {
+    case RECEIVE_POSTS:
       return {
         ...state,
         ...action.posts
       }
-    default :
+    case VOTE_POST:
+      return {
+        ...state,
+        [action.id]: {
+          ...state[action.id],
+          voteScore: action.option === "upVote"
+            ? state[action.id].voteScore++
+            : state[action.id].voteScore--
+        }
+      }
+    default:
       return state
   }
 }  

@@ -4,15 +4,32 @@ import { Icon, Tag } from 'antd';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import VoteScore from './VoteScore';
+import { handleVotePost } from '../actions/posts';
 
 class Post extends React.Component {
+
+  handleVote = (option, e) => {
+    e.preventDefault();
+
+    const { dispatch, post } = this.props
+
+    dispatch(handleVotePost({
+      id: post.id,
+      option
+    }))
+
+  }
+
   render() {
     const { limit, post, authedUser } = this.props;
     const { id, voteScore, author, timestamp, category, body, commentCount, title } = post;
 
     return (
       <div style={{ display: 'flex' }}>
-        <VoteScore score={voteScore} />
+        <VoteScore
+          score={voteScore}
+          handleVote={this.handleVote}
+        />
         <div>
           <UserInfo> Posted by {author} {timestamp} (time) ago </UserInfo>
           <Title>

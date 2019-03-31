@@ -2,11 +2,17 @@ import React from 'react';
 import { Icon } from 'antd';
 import styled from 'styled-components';
 
-const VoteScore = ({ score }) => (
+const VoteScore = ({ score, handleVote }) => (
   <ActionScore>
-    <Icon type="caret-up" />
+    <Icon
+      type="caret-up"
+      onClick={handleVote.bind(this, 'upVote')}
+    />
     <span>{score}</span>
-    <Icon type="caret-down" />
+    <Icon
+      type="caret-down"
+      onClick={handleVote.bind(this, 'downVote')}
+    />
   </ActionScore>
 );
 

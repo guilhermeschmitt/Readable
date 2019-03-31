@@ -1,21 +1,21 @@
 import { headers, api } from './ConfigAPI';
 
-export const getCategories = () =>
-  fetch(`${api}/categories`, { headers })
-    .then(res => res.json())
-    .then(({ categories }) => categories);
+// export const getCategories = () =>
+//   fetch(`${api}/categories`, { headers })
+//     .then(res => res.json())
+//     .then(({ categories }) => categories);
 
-export const getPostsFromCategory = category =>
-  fetch(`${api}/${category}/posts`, { headers })
-    .then(res => res.json());
+// export const getPostsFromCategory = category =>
+//   fetch(`${api}/${category}/posts`, { headers })
+//     .then(res => res.json());
 
 export const getPosts = () =>
   fetch(`${api}/posts`, { headers })
     .then(res => res.json());
 
-export const getPostById = id =>
-  fetch(`${api}/posts/${id}`, { headers })
-    .then(res => res.json());
+// export const getPostById = id =>
+//   fetch(`${api}/posts/${id}`, { headers })
+//     .then(res => res.json());
 
 export const getPostComments = id =>
   fetch(`${api}/posts/${id}/comments`, { headers })
