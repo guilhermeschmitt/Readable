@@ -20,7 +20,7 @@ class Post extends React.Component {
   }
 
   render() {
-    const { limit, post, authedUser } = this.props;
+    const { limit, post } = this.props;
     const { id, voteScore, author, timestamp, category, body, commentCount, title } = post;
 
     return (
@@ -35,7 +35,7 @@ class Post extends React.Component {
             <Link to={`/posts/${category}`}>
               <Tag className={category}> {category} </Tag>
             </Link>
-            <Link to={`/post/${id}`}>
+            <Link to={`/${category}/${id}`}>
               {title}
             </Link>
           </Title>
@@ -55,11 +55,10 @@ class Post extends React.Component {
   }
 }
 
-function mapStateToProps({ authedUser, posts }, { id, limit }) {
+function mapStateToProps({ posts }, { id, limit }) {
   const post = posts[id];
 
   return {
-    authedUser,
     post: post ? post : null,
     limit
   }
