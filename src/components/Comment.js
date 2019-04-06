@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 import VoteScore from './VoteScore';
 
@@ -25,6 +26,14 @@ class Comment extends React.Component {
   }
 }
 
+function mapStateToProps({ comments }, { id }) {
+  const comment = comments[id];
+
+  return {
+    comment: comment ? comment : null,
+  }
+}
+
 const Container = styled.div`
   display: flex;
   padding: 2vh 0px;
@@ -44,4 +53,4 @@ const Actions = styled.div`
   flex-direction: column;
 `;
 
-export default Comment;
+export default connect(mapStateToProps)(Comment);

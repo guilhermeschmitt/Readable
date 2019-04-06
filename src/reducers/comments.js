@@ -1,17 +1,16 @@
-import { RECEIVE_POSTS, REMOVE_POST, VOTE_POST } from '../actions/posts'
+import { RECEIVE_COMMENTS, REMOVE_COMMENT, VOTE_COMMENT } from '../actions/comments'
 
-export default function posts(state = {}, action) {
+export default function comments(state = {}, action) {
   switch (action.type) {
-    case RECEIVE_POSTS:
+    case RECEIVE_COMMENTS:
       return {
-        ...state,
-        ...action.posts
+        ...action.comments
       };
-    case REMOVE_POST:
+    case REMOVE_COMMENT:
       let newState = {};
       Object.keys(state).map(key => key !== action.id ? newState[key] = state[key] : null);
       return { ...newState }
-    case VOTE_POST:
+    case VOTE_COMMENT:
       return {
         ...state,
         [action.id]: {
@@ -24,4 +23,4 @@ export default function posts(state = {}, action) {
     default:
       return state
   }
-}  
+}

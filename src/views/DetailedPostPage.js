@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import { receiveComments } from '../actions/comments';
 import { handleVotePost, onRemovePost } from '../actions/posts';
 import { getPostComments } from '../utils/PostsAPI';
 import VoteScore from '../components/VoteScore';
@@ -9,17 +10,14 @@ import { Button } from 'antd';
 
 class DetailedPostPage extends React.Component {
   /* 
-  FIXME: Até posso deixar esses comentários numa store, tenho que pensar nisso melhor
   TODO: Colocar um efeito on hover nas setas depois, quando jogar o estilo todo pro css
   TODO: Acho que o botão de Novo alguma coisa, podia ficar na lista mesmo.
   */
-  state = {
-    comments: []
-  }
 
   componentDidMount() {
-    getPostComments(this.props.match.params.id)
-      .then(response => this.setState({ comments: response }))
+    const { match, dispatch } = this.props;
+    getPostComments(match.params.id)
+      .then(response => dispatch(receiveComments(response)))
   }
 
   handleVote = (option, e) => {
@@ -30,13 +28,13 @@ class DetailedPostPage extends React.Component {
 
   onRemove = event => {
     //TODO: Vai abrir modal perguntando se a pessoa deseja excluir e daí depois vem a lógica abaixo;
-    const {dispatch, post} = this.props;
+    const { dispatch, post } = this.props;
     event.preventDefault();
     dispatch(onRemovePost(post.id))
   }
 
   render() {
-    const { post } = this.props;
+    const { post, commentsIds } = this.props;
 
     if (!post)
       return <div>Página 404</div>
@@ -58,7 +56,7 @@ class DetailedPostPage extends React.Component {
         </div>
 
         <CommentsList
-          comments={this.state.comments}
+          comments={commentsIds}
         />
 
 
@@ -122,11 +120,12 @@ const Actions = styled.div`
 `;
 
 
-function mapStateToProps({ posts }, { match }) {
+function mapStateToProps({ posts, comments }, { match }) {
   const { category, id } = match.params;
-  if (posts[id] && posts[id].category === category)
-    return { post: posts[id] }
-  return { post: null }
+  const post = (posts[id] && posts[id].category === category) ? posts[id] : null;
+  return { 
+    post, 
+    commentsIds: Object.keys(comments).sort((a, b) => comments[b].voteScore - comments[a].voteScore) }
 }
 
 export default connect(mapStateToProps)(DetailedPostPage);

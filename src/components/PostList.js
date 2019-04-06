@@ -3,13 +3,14 @@ import { List } from 'antd';
 import Post from './Post';
 
 const PostList = ({ posts }) => {
+
   return (
     <List
       itemLayout="vertical"
       dataSource={posts}
-      renderItem={post => (
+      renderItem={idPost => (
         <Post
-          id={post}
+          id={idPost}
           limit={255}
         />
       )}
