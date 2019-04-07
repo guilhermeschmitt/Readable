@@ -23,7 +23,7 @@ class App extends Component {
           <div>
             <Route path='/' exact component={PostsPage} />
             <Route path='/posts/:category' exact component={CategoryPostPage} />
-            <Route path='/post/:id' component={DetailedPostPage} />
+            <Route path='/:category/:id' exact component={DetailedPostPage} />
             <Route path='/new' component={NewPostPage} />
           </div>
         </React.Fragment>
