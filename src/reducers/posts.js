@@ -1,4 +1,4 @@
-import { RECEIVE_POSTS, REMOVE_POST, VOTE_POST } from '../actions/posts'
+import { RECEIVE_POSTS, REMOVE_POST, VOTE_POST, DECREASE_COMMENT_COUNTER } from '../actions/posts'
 
 export default function posts(state = {}, action) {
   switch (action.type) {
@@ -11,6 +11,14 @@ export default function posts(state = {}, action) {
       let newState = {};
       Object.keys(state).map(key => key !== action.id ? newState[key] = state[key] : null);
       return { ...newState }
+    case DECREASE_COMMENT_COUNTER:
+      return {
+        ...state,
+        [action.id]: {
+          ...state[action.id],
+          commentCount: state[action.id].commentCount -= 1
+        }
+      }
     case VOTE_POST:
       return {
         ...state,

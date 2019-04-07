@@ -9,9 +9,8 @@ import { handleVotePost } from '../actions/posts';
 class Post extends React.Component {
 
   handleVote = (option, e) => {
-    e.preventDefault();
-
     const { dispatch, post } = this.props;
+    e.preventDefault();
     dispatch(handleVotePost({
       id: post.id,
       option

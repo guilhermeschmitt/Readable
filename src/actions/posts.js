@@ -3,6 +3,7 @@ import { voteOnAPost, deletePost } from '../utils/PostsAPI';
 export const RECEIVE_POSTS = 'RECEIVE_POSTS';
 export const VOTE_POST = 'VOTE_POST';
 export const REMOVE_POST = 'REMOVE_POST';
+export const DECREASE_COMMENT_COUNTER = 'DECREASE_COMMENT_COUNTER';
 
 export function receivePosts(obj) {
   const posts = {};
@@ -34,6 +35,13 @@ export function onRemovePost(id) {
     dispatch(removePost(id));
     return deletePost(id);
     //TODO: CATCH EXCEPTION E TALS
+  }
+}
+
+export function decreaseCommentCounter(id) {
+  return {
+    type: DECREASE_COMMENT_COUNTER,
+    id
   }
 }
 
