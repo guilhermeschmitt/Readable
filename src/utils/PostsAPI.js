@@ -1,9 +1,9 @@
 import { headers, api } from './ConfigAPI';
 
-// export const getCategories = () =>
-//   fetch(`${api}/categories`, { headers })
-//     .then(res => res.json())
-//     .then(({ categories }) => categories);
+export const getCategories = () =>
+  fetch(`${api}/categories`, { headers })
+    .then(res => res.json())
+    .then(({ categories }) => categories);
 
 // export const getPostsFromCategory = category =>
 //   fetch(`${api}/${category}/posts`, { headers })
