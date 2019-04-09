@@ -6,12 +6,13 @@ import { handleVotePost, onRemovePost } from '../actions/posts';
 import { getPostComments } from '../utils/PostsAPI';
 import VoteScore from '../components/VoteScore';
 import CommentsList from '../components/CommentsList';
-import { Button } from 'antd';
+import { Icon } from 'antd';
+import ModalDelete from '../components/ModalDelete';
 
 class DetailedPostPage extends React.Component {
   /* 
-  TODO: Colocar um efeito on hover nas setas depois, quando jogar o estilo todo pro css
-  TODO: Acho que o botão de Novo alguma coisa, podia ficar na lista mesmo.
+  TODO: Colocar um efeito on hover nos ícones depois, quando jogar o estilo todo pro css
+  TODO: Após remover, da um push pra alguma outra página
   */
 
   componentDidMount() {
@@ -27,10 +28,9 @@ class DetailedPostPage extends React.Component {
   }
 
   onRemove = event => {
-    //TODO: Vai abrir modal perguntando se a pessoa deseja excluir e daí depois vem a lógica abaixo;
     const { dispatch, post } = this.props;
     event.preventDefault();
-    dispatch(onRemovePost(post.id))
+    dispatch(onRemovePost(post.id));
   }
 
   render() {
@@ -51,14 +51,14 @@ class DetailedPostPage extends React.Component {
           onRemove={this.onRemove}
         />
 
-        <div>
-          Comentários ({post.commentCount})
-        </div>
-
         <CommentsList
           comments={commentsIds}
+          textHeader={
+            <span>
+              <Icon type='message'/> Comentários ({post.commentCount})
+            </span>
+          }
         />
-
 
       </div>
     );
@@ -81,10 +81,14 @@ const DetailedPost = ({ voteScore, title, author, timestamp, body, onVote, onRem
       </Body>
     </InfoPost>
     <Actions>
-      <span>EDITAR</span>
-      <Button onClick={onRemove}>
-        REMOVER
-      </Button>
+      <Icon
+        type="edit"
+        onClick={() => console.log("TODO:")}
+      />
+      <ModalDelete 
+        text='post'
+        onConfirm={onRemove}
+      />
     </Actions>
   </Container>
 )
@@ -123,9 +127,10 @@ const Actions = styled.div`
 function mapStateToProps({ posts, comments }, { match }) {
   const { category, id } = match.params;
   const post = (posts[id] && posts[id].category === category) ? posts[id] : null;
-  return { 
-    post, 
-    commentsIds: Object.keys(comments).sort((a, b) => comments[b].voteScore - comments[a].voteScore) }
+  return {
+    post,
+    commentsIds: Object.keys(comments).sort((a, b) => comments[b].voteScore - comments[a].voteScore)
+  }
 }
 
 export default connect(mapStateToProps)(DetailedPostPage);

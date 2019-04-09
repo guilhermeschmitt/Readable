@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import VoteScore from './VoteScore';
 import { handleVoteComment, onRemoveComment } from '../actions/comments';
-import {decreaseCommentCounter} from '../actions/posts';
-import { Button } from 'antd';
+import { decreaseCommentCounter } from '../actions/posts';
+import { Icon } from 'antd';
+import ModalDelete from './ModalDelete';
 
 class Comment extends React.Component {
 
@@ -14,7 +15,6 @@ class Comment extends React.Component {
     this.props.dispatch(handleVoteComment({ id, option }))
   }
 
-  //TODO: Vai abrir modal perguntando se a pessoa deseja excluir e daí depois vem a lógica abaixo;
   onRemove = event => {
     const { dispatch, comment } = this.props;
     event.preventDefault();
@@ -35,10 +35,14 @@ class Comment extends React.Component {
           <span>{body}</span>
         </InfoComment>
         <Actions>
-          <span>EDITAR</span>
-          <Button onClick={this.onRemove}>
-            Remover
-          </Button>
+          <Icon
+            type="edit"
+            onClick={() => console.log("TODO:")}
+          />
+          <ModalDelete 
+            text='comment'
+            onConfirm={this.onRemove}
+          />
         </Actions>
       </Container>
     )
