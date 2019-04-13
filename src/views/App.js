@@ -25,9 +25,9 @@ class App extends Component {
             <Switch>
               <Route path='/' exact component={PostsPage} />
               <Route path='/new/post' component={FormPostPage} />
-              <Route path='/new/comment' component={FormCommentPage} />
               <Route path='/posts/:category' exact component={CategoryPostPage} />
               <Route path='/:category/:id' exact component={DetailedPostPage} />
+              <Route path='/:category/:id/new/comment' component={FormCommentPage} />
             </Switch>
           </div>
         </React.Fragment>

@@ -1,4 +1,5 @@
 import { voteOnAPost, deletePost, savePost } from '../utils/PostsAPI';
+import { generateUID } from '../utils/utils';
 
 export const RECEIVE_POSTS = 'RECEIVE_POSTS';
 export const VOTE_POST = 'VOTE_POST';
@@ -6,6 +7,7 @@ export const ADD_POST = 'ADD_POST';
 export const EDIT_POST = 'EDIT_POST';
 export const REMOVE_POST = 'REMOVE_POST';
 export const DECREASE_COMMENT_COUNTER = 'DECREASE_COMMENT_COUNTER';
+export const INCREASE_COMMENT_COUNTER = 'INCREASE_COMMENT_COUNTER';
 
 export function receivePosts(obj) {
   const posts = {};
@@ -34,24 +36,24 @@ function votePost({ id, option }) {
 
 
 function addPost(post) {
-	return {
-		type: ADD_POST,
-		post,
-	}
+  return {
+    type: ADD_POST,
+    post,
+  }
 }
 
 export function handleAddPost(post) {
-	return (dispatch, getState) => {
-		const { authedUser } = getState();
-		// dispatch(showLoading);
-		savePost({
-			...post,
+  return (dispatch, getState) => {
+    const { authedUser } = getState();
+    // dispatch(showLoading);
+    savePost({
+      ...post,
       author: authedUser,
       timestamp: Date.now(),
-      id: 'TODO:3'
+      id: generateUID()
 		}).then(post => dispatch(addPost(post)))
-			// .then(() => dispatch(hideLoading));
-	}
+    // .then(() => dispatch(hideLoading));
+  }
 }
 
 export function onRemovePost(id) {
@@ -65,6 +67,13 @@ export function onRemovePost(id) {
 export function decreaseCommentCounter(id) {
   return {
     type: DECREASE_COMMENT_COUNTER,
+    id
+  }
+}
+
+export function increaseCommentCounter(id) {
+  return {
+    type: INCREASE_COMMENT_COUNTER,
     id
   }
 }

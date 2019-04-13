@@ -1,6 +1,10 @@
-import { voteOnAComment, deleteComment } from '../utils/CommentsAPI';
+import { voteOnAComment, deleteComment, saveComment } from '../utils/CommentsAPI';
+import { increaseCommentCounter } from '../actions/posts';
+import { generateUID } from '../utils/utils';
 
 export const RECEIVE_COMMENTS = 'RECEIVE_COMMENTS';
+export const ADD_COMMENT = 'ADD_COMMENT';
+export const EDIT_COMMENT = 'EDIT_COMMENT';
 export const VOTE_COMMENT = 'VOTE_COMMENT';
 export const REMOVE_COMMENT = 'REMOVE_COMMENT';
 
@@ -10,6 +14,30 @@ export function receiveComments(obj) {
   return {
     type: RECEIVE_COMMENTS,
     comments,
+  }
+}
+
+function addComment(comment) {
+  return {
+    type: ADD_COMMENT,
+    comment,
+  }
+}
+
+export function handleAddComment(comment, postId) {
+
+  return (dispatch, getState) => {
+    const { authedUser } = getState();
+    // dispatch(showLoading);
+    saveComment({
+      ...comment,
+      author: authedUser,
+      timestamp: Date.now(),
+      parentId: postId,
+      id: generateUID()
+    }).then(comment => dispatch(addComment(comment)))
+      .then(() => dispatch(increaseCommentCounter(postId)))
+    // .then(() => dispatch(hideLoading));
   }
 }
 

@@ -20,7 +20,7 @@ export const deleteComment = id =>
     headers: { ...headers }
   }).then(res => res.json());
 
-export const addComment = comment =>
+export const saveComment = comment =>
   fetch(`${api}/comments`, {
     method: 'POST',
     headers: {
