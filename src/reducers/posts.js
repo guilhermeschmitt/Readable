@@ -1,4 +1,4 @@
-import { RECEIVE_POSTS, REMOVE_POST, VOTE_POST, DECREASE_COMMENT_COUNTER } from '../actions/posts'
+import { RECEIVE_POSTS, REMOVE_POST, VOTE_POST, DECREASE_COMMENT_COUNTER, ADD_POST } from '../actions/posts'
 
 export default function posts(state = {}, action) {
   switch (action.type) {
@@ -6,6 +6,12 @@ export default function posts(state = {}, action) {
       return {
         ...state,
         ...action.posts
+      };
+    case ADD_POST:
+      const { post } = action;
+      return {
+        ...state,
+				[post.id]: post,
       };
     case REMOVE_POST:
       let newState = {};

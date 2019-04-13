@@ -5,14 +5,14 @@ import HeaderList from './HeaderList';
 
 
 //TODO: Tenho que fazer um loading pra cá
-const CommentsList = ({ comments, textHeader }) => {
+const CommentsList = ({ comments, textHeader, goTo }) => {
   return (
     <React.Fragment>
       <HeaderList
         title={textHeader}
         renderOrder={false}
         buttonText='COMMENT'
-        buttonAction={() => console.log('TODO:')}
+        goTo={goTo}
       />
       <List
         itemLayout="vertical"

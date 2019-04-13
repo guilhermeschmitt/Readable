@@ -7,6 +7,7 @@ class CategoryPostPage extends React.Component {
     return (
       <PostList
         posts={this.props.postsIds}
+        goTo={() => { this.props.history.push('/new/post') }}
       />
     );
   }

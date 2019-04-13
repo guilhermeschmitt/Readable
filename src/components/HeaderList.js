@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Menu, Dropdown, Icon } from 'antd';
 import styled from 'styled-components';
 
-const HeaderList = ({title, renderOrder, buttonText, buttonAction}) => (
+const HeaderList = ({title, renderOrder, buttonText, goTo}) => (
   <Container>
     <Title>
       {title}
@@ -26,7 +26,7 @@ const HeaderList = ({title, renderOrder, buttonText, buttonAction}) => (
       <Button
         type="primary"
         icon="plus"
-        onClick={buttonAction}
+        onClick={goTo}
       >
         {buttonText}
       </Button>

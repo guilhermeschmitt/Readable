@@ -1,7 +1,9 @@
-import { voteOnAPost, deletePost } from '../utils/PostsAPI';
+import { voteOnAPost, deletePost, savePost } from '../utils/PostsAPI';
 
 export const RECEIVE_POSTS = 'RECEIVE_POSTS';
 export const VOTE_POST = 'VOTE_POST';
+export const ADD_POST = 'ADD_POST';
+export const EDIT_POST = 'EDIT_POST';
 export const REMOVE_POST = 'REMOVE_POST';
 export const DECREASE_COMMENT_COUNTER = 'DECREASE_COMMENT_COUNTER';
 
@@ -28,6 +30,28 @@ function votePost({ id, option }) {
     id,
     option
   }
+}
+
+
+function addPost(post) {
+	return {
+		type: ADD_POST,
+		post,
+	}
+}
+
+export function handleAddPost(post) {
+	return (dispatch, getState) => {
+		const { authedUser } = getState();
+		// dispatch(showLoading);
+		savePost({
+			...post,
+      author: authedUser,
+      timestamp: Date.now(),
+      id: 'TODO:3'
+		}).then(post => dispatch(addPost(post)))
+			// .then(() => dispatch(hideLoading));
+	}
 }
 
 export function onRemovePost(id) {

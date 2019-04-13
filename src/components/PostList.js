@@ -3,14 +3,14 @@ import { List } from 'antd';
 import Post from './Post';
 import HeaderList from './HeaderList';
 
-const PostList = ({ posts }) => {
+const PostList = ({ posts, goTo }) => {
   return (
     <React.Fragment>
       <HeaderList 
         title='POST'
         renderOrder={true}
         buttonText='POST'
-        buttonAction={() => console.log('TODO:')}
+        goTo={goTo}
       />
       <List
         itemLayout="vertical"
