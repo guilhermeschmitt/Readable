@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
+import LoadingBar from 'react-redux-loading';
 import PostsPage from './PostsPage';
 import CategoryPostPage from './CategoryPostPage';
 import DetailedPostPage from './DetailedPostPage';
@@ -14,26 +15,38 @@ class App extends Component {
     this.props.dispatch(handleInitialData())
   }
 
-  //TODO: LOADING
-  
   render() {
     return (
       <Router>
-        <React.Fragment>
+        <div>
+          <LoadingBar />
           <Nav />
           <div>
-            <Switch>
-              <Route path='/' exact component={PostsPage} />
-              <Route path='/new/post' component={FormPostPage} />
-              <Route path='/posts/:category' exact component={CategoryPostPage} />
-              <Route path='/:category/:id' exact component={DetailedPostPage} />
-              <Route path='/:category/:id/new/comment' component={FormCommentPage} />
-            </Switch>
+            {this.props.loading === true
+              ? null
+              :
+              <Switch>
+                <Route path='/' exact component={PostsPage} />
+                <Route path='/new/post' component={FormPostPage} />
+                <Route path='/posts/:category' exact component={CategoryPostPage} />
+                <Route path='/:category/:id' exact component={DetailedPostPage} />
+                <Route path='/:category/:id/new/comment' component={FormCommentPage} />
+              </Switch>
+            }
           </div>
-        </React.Fragment>
+        </div>
       </Router>
     );
   }
 }
 
-export default connect()(App);
+
+function mapStateToProps({ authedUser }) {
+  console.log(authedUser);
+
+  return {
+    loading: authedUser === null
+  }
+}
+
+export default connect(mapStateToProps)(App);

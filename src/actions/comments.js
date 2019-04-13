@@ -1,5 +1,7 @@
+import { showLoading, hideLoading } from 'react-redux-loading';
 import { voteOnAComment, deleteComment, saveComment } from '../utils/CommentsAPI';
-import { increaseCommentCounter } from '../actions/posts';
+import { getPostComments } from '../utils/PostsAPI';
+import { increaseCommentCounter, decreaseCommentCounter } from '../actions/posts';
 import { generateUID } from '../utils/utils';
 
 export const RECEIVE_COMMENTS = 'RECEIVE_COMMENTS';
@@ -7,6 +9,15 @@ export const ADD_COMMENT = 'ADD_COMMENT';
 export const EDIT_COMMENT = 'EDIT_COMMENT';
 export const VOTE_COMMENT = 'VOTE_COMMENT';
 export const REMOVE_COMMENT = 'REMOVE_COMMENT';
+
+export function onReceiveComments(id) {
+  return (dispatch) => {
+    dispatch(showLoading());
+    getPostComments(id)
+      .then(response => dispatch(receiveComments(response)))
+      .then(dispatch(hideLoading()))
+  }
+}
 
 export function receiveComments(obj) {
   const comments = {};
@@ -28,7 +39,6 @@ export function handleAddComment(comment, postId) {
 
   return (dispatch, getState) => {
     const { authedUser } = getState();
-    // dispatch(showLoading);
     saveComment({
       ...comment,
       author: authedUser,
@@ -37,7 +47,6 @@ export function handleAddComment(comment, postId) {
       id: generateUID()
     }).then(comment => dispatch(addComment(comment)))
       .then(() => dispatch(increaseCommentCounter(postId)))
-    // .then(() => dispatch(hideLoading));
   }
 }
 
@@ -56,10 +65,11 @@ function voteComment({ id, option }) {
   }
 }
 
-export function onRemoveComment(id) {
+export function onRemoveComment(comment) {
   return dispatch => {
-    dispatch(removeComment(id));
-    return deleteComment(id);
+    dispatch(removeComment(comment.id));
+    deleteComment(comment.id)
+      .then(() => dispatch(decreaseCommentCounter(comment.parentId)));
     //TODO: CATCH EXCEPTION E TALS
   }
 }

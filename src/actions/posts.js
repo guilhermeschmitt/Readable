@@ -34,7 +34,6 @@ function votePost({ id, option }) {
   }
 }
 
-
 function addPost(post) {
   return {
     type: ADD_POST,
@@ -45,14 +44,12 @@ function addPost(post) {
 export function handleAddPost(post) {
   return (dispatch, getState) => {
     const { authedUser } = getState();
-    // dispatch(showLoading);
     savePost({
       ...post,
       author: authedUser,
       timestamp: Date.now(),
       id: generateUID()
-		}).then(post => dispatch(addPost(post)))
-    // .then(() => dispatch(hideLoading));
+    }).then(post => dispatch(addPost(post)))
   }
 }
 

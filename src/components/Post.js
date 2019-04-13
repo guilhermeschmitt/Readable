@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import VoteScore from './VoteScore';
 import { handleVotePost } from '../actions/posts';
+import { timestampToDate } from '../utils/utils';
 
 class Post extends React.Component {
 
@@ -29,7 +30,7 @@ class Post extends React.Component {
           handleVote={this.handleVote}
         />
         <div>
-          <UserInfo> Posted by {author} {timestamp} (time) ago </UserInfo>
+          <UserInfo> Posted by {author} at {timestampToDate(timestamp)} </UserInfo>
           <Title>
             <Link to={`/posts/${category}`}>
               <Tag className={category}> {category} </Tag>
