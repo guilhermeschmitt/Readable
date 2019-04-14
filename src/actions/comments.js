@@ -1,8 +1,24 @@
-import { voteOnAComment, deleteComment } from '../utils/CommentsAPI';
+import { showLoading, hideLoading } from 'react-redux-loading';
+import { voteOnAComment, deleteComment, saveComment, updateComment } from '../utils/CommentsAPI';
+import { getPostComments } from '../utils/PostsAPI';
+import { increaseCommentCounter, decreaseCommentCounter } from '../actions/posts';
+import { generateUID } from '../utils/utils';
+import { message } from 'antd';
 
 export const RECEIVE_COMMENTS = 'RECEIVE_COMMENTS';
+export const ADD_COMMENT = 'ADD_COMMENT';
+export const EDIT_COMMENT = 'EDIT_COMMENT';
 export const VOTE_COMMENT = 'VOTE_COMMENT';
 export const REMOVE_COMMENT = 'REMOVE_COMMENT';
+
+export function onReceiveComments(id) {
+  return dispatch => {
+    dispatch(showLoading());
+    getPostComments(id)
+      .then(response => dispatch(receiveComments(response)))
+      .then(() => dispatch(hideLoading()))
+  }
+}
 
 export function receiveComments(obj) {
   const comments = {};
@@ -10,6 +26,20 @@ export function receiveComments(obj) {
   return {
     type: RECEIVE_COMMENTS,
     comments,
+  }
+}
+
+function addComment(comment) {
+  return {
+    type: ADD_COMMENT,
+    comment,
+  }
+}
+
+function editComment(comment) {
+  return {
+    type: EDIT_COMMENT,
+    comment,
   }
 }
 
@@ -28,23 +58,56 @@ function voteComment({ id, option }) {
   }
 }
 
-export function onRemoveComment(id) {
+export function handleAddComment(comment, postId) {
+  return (dispatch, getState) => {
+    const { authedUser } = getState();
+    saveComment({
+      ...comment,
+      author: authedUser,
+      timestamp: Date.now(),
+      parentId: postId,
+      id: generateUID()
+    }).then(comment => dispatch(addComment(comment)))
+      .then(() => {
+        dispatch(increaseCommentCounter(postId));
+        message.success('Comment added successfully!');
+      }).catch(() => message.error('There was a server error!'))
+  }
+}
+
+export function handleEditComment(comment) {
   return dispatch => {
-    dispatch(removeComment(id));
-    return deleteComment(id);
-    //TODO: CATCH EXCEPTION E TALS
+    updateComment({
+      id: comment.id,
+      timestamp: Date.now(),
+      body: comment.body
+    }).then(comment => {
+      dispatch(editComment(comment));
+      message.success('Comment edited successfully!');
+    }).catch(() => message.error('There was a server error!'))
+  }
+}
+
+export function onRemoveComment(comment) {
+  return dispatch => {
+    dispatch(removeComment(comment.id));
+    dispatch(decreaseCommentCounter(comment.parentId));
+    deleteComment(comment.id)
+      .then(() => message.success('Comment removed successfully!'))
+      .catch(() => {
+        message.error('Ocorreu um erro ao remover o comentário!')
+        dispatch(increaseCommentCounter(comment.parentId));
+      })
   }
 }
 
 export function handleVoteComment(info) {
   return (dispatch) => {
     dispatch(voteComment(info))
-    return voteOnAComment(info);
-    //TODO: CATCH
-    // .catch((e) => {
-    //   console.warn('Error in handleVotePost: ', e)
-    //   dispatch(toggleTweet(info))
-    //   alert('This was an error voting in a post. Try again.')
-    // })
+    return voteOnAComment(info)
+      .catch(() => {
+        dispatch(voteComment(info !== 'upVote' ? 'upVote' : info));
+        message.error('There was a server error!');
+      });
   }
 }

@@ -1,23 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { receiveComments } from '../actions/comments';
+import { Icon } from 'antd';
+import { onReceiveComments } from '../actions/comments';
 import { handleVotePost, onRemovePost } from '../actions/posts';
-import { getPostComments } from '../utils/PostsAPI';
 import VoteScore from '../components/VoteScore';
 import CommentsList from '../components/CommentsList';
-import { Button } from 'antd';
+import ModalDelete from '../components/ModalDelete';
+import { timestampToDate } from '../utils/utils';
 
 class DetailedPostPage extends React.Component {
-  /* 
-  TODO: Colocar um efeito on hover nas setas depois, quando jogar o estilo todo pro css
-  TODO: Acho que o botão de Novo alguma coisa, podia ficar na lista mesmo.
-  */
-
   componentDidMount() {
     const { match, dispatch } = this.props;
-    getPostComments(match.params.id)
-      .then(response => dispatch(receiveComments(response)))
+    dispatch(onReceiveComments(match.params.id))
   }
 
   handleVote = (option, e) => {
@@ -27,17 +22,17 @@ class DetailedPostPage extends React.Component {
   }
 
   onRemove = event => {
-    //TODO: Vai abrir modal perguntando se a pessoa deseja excluir e daí depois vem a lógica abaixo;
-    const { dispatch, post } = this.props;
+    const { dispatch, post, history } = this.props;
     event.preventDefault();
-    dispatch(onRemovePost(post.id))
+    dispatch(onRemovePost(post.id));
+    history.push('/');
   }
 
   render() {
-    const { post, commentsIds } = this.props;
+    const { post, commentsIds, history, location, authedUser } = this.props;
 
     if (!post)
-      return <div>Página 404</div>
+      return <div>Page 404</div>
 
     return (
       <div>
@@ -49,23 +44,26 @@ class DetailedPostPage extends React.Component {
           body={post.body}
           onVote={this.handleVote}
           onRemove={this.onRemove}
+          onEdit={() => {history.push(`${location.pathname}/edit`)}}
+          authedUser={authedUser}
         />
-
-        <div>
-          Comentários ({post.commentCount})
-        </div>
 
         <CommentsList
           comments={commentsIds}
+          textHeader={
+            <span>
+              <Icon type='message' /> Comments ({post.commentCount})
+            </span>
+          }
+          goTo={() => { history.push(`${location.pathname}/comment/new`) }}
         />
-
 
       </div>
     );
   }
 }
 
-const DetailedPost = ({ voteScore, title, author, timestamp, body, onVote, onRemove }) => (
+const DetailedPost = ({ voteScore, title, author, timestamp, body, onVote, onRemove, authedUser, onEdit }) => (
   <Container>
     <VoteScore
       score={voteScore}
@@ -74,18 +72,24 @@ const DetailedPost = ({ voteScore, title, author, timestamp, body, onVote, onRem
     <InfoPost>
       <Header>
         <Title>{title}</Title>
-        <Author>Posted by <b>{author}</b> at <b>{timestamp}</b></Author>
+        <Author>Posted by <b>{author}</b> at <b>{timestampToDate(timestamp)}</b></Author>
       </Header>
       <Body>
         {body}
       </Body>
     </InfoPost>
-    <Actions>
-      <span>EDITAR</span>
-      <Button onClick={onRemove}>
-        REMOVER
-      </Button>
-    </Actions>
+    {authedUser === author &&
+      <Actions>
+        <Icon
+          type="edit"
+          onClick={onEdit}
+        />
+        <ModalDelete
+          text='post'
+          onConfirm={onRemove}
+        />
+      </Actions>
+    }
   </Container>
 )
 
@@ -120,12 +124,14 @@ const Actions = styled.div`
 `;
 
 
-function mapStateToProps({ posts, comments }, { match }) {
+function mapStateToProps({ posts, comments, authedUser }, { match }) {
   const { category, id } = match.params;
   const post = (posts[id] && posts[id].category === category) ? posts[id] : null;
-  return { 
-    post, 
-    commentsIds: Object.keys(comments).sort((a, b) => comments[b].voteScore - comments[a].voteScore) }
+  return {
+    post,
+    authedUser,
+    commentsIds: Object.keys(comments).sort((a, b) => comments[b].voteScore - comments[a].voteScore)
+  }
 }
 
 export default connect(mapStateToProps)(DetailedPostPage);

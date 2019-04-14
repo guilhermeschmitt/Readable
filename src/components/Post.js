@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import VoteScore from './VoteScore';
 import { handleVotePost } from '../actions/posts';
+import { timestampToDate } from '../utils/utils';
 
 class Post extends React.Component {
 
@@ -29,9 +30,9 @@ class Post extends React.Component {
           handleVote={this.handleVote}
         />
         <div>
-          <UserInfo> Posted by {author} {timestamp} (time) ago </UserInfo>
+          <UserInfo> Posted by {author} at {timestampToDate(timestamp)} </UserInfo>
           <Title>
-            <Link to={`/posts/${category}`}>
+            <Link to={`/${category}`}>
               <Tag className={category}> {category} </Tag>
             </Link>
             <Link to={`/${category}/${id}`}>
@@ -80,13 +81,13 @@ const Title = styled.div`
     border-color: #ffadd2;
   }
 
-  .outro{
+  .redux{
     color: #2f54eb;
     background: #f0f5ff;
     border-color: #adc6ff;
   }
 
-  .outro2{
+  .udacity{
     color: #52c41a;
     background: #f6ffed;
     border-color: #b7eb8f;

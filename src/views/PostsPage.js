@@ -7,15 +7,16 @@ class PostsPage extends React.Component {
     return (
       <PostList
         posts={this.props.postsIds}
+        goTo={() => { this.props.history.push('/new/post') }}
       />
     );
   }
 }
 
-function mapStateToProps({ posts }) {
+function mapStateToProps(state) {
+  const { posts } = state;
   return {
     postsIds: Object.keys(posts)
-      .sort((a, b) => posts[b].voteScore - posts[a].voteScore)
   }
 }
 

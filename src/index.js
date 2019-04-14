@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './views/App';
+import 'semantic-ui-css/semantic.min.css'
 import 'antd/dist/antd.css';
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'

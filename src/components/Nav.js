@@ -22,7 +22,7 @@ const Nav = ({ categories }) => (
       {Object.values(categories).map(({ name, path }) =>
         (
           <Menu.Item key={name}>
-            <NavLink to={`/posts/${path}`} exact>
+            <NavLink to={`/${path}`} exact>
               <Icon type="tag" />
               <span>{name.toUpperCase()}</span>
             </NavLink>

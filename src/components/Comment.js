@@ -1,10 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from "react-router";
 import styled from 'styled-components';
+import { Icon } from 'antd';
 import VoteScore from './VoteScore';
+import ModalDelete from './ModalDelete';
 import { handleVoteComment, onRemoveComment } from '../actions/comments';
-import {decreaseCommentCounter} from '../actions/posts';
-import { Button } from 'antd';
+import { timestampToDate } from '../utils/utils';
 
 class Comment extends React.Component {
 
@@ -14,16 +16,15 @@ class Comment extends React.Component {
     this.props.dispatch(handleVoteComment({ id, option }))
   }
 
-  //TODO: Vai abrir modal perguntando se a pessoa deseja excluir e daí depois vem a lógica abaixo;
   onRemove = event => {
     const { dispatch, comment } = this.props;
     event.preventDefault();
-    dispatch(onRemoveComment(comment.id))
-      .then(() => dispatch(decreaseCommentCounter(comment.parentId)));
+    dispatch(onRemoveComment(comment))
   }
 
   render() {
-    const { voteScore, body, author, timestamp } = this.props.comment;
+    const { voteScore, body, author, timestamp, id } = this.props.comment;
+    const { authedUser, history, location } = this.props;
     return (
       <Container>
         <VoteScore
@@ -31,25 +32,32 @@ class Comment extends React.Component {
           handleVote={this.handleVote}
         />
         <InfoComment>
-          <Title><b>{author}</b>  at <b>{timestamp}</b></Title>
+          <Title><b>{author}</b>  at <b>{timestampToDate(timestamp)}</b></Title>
           <span>{body}</span>
         </InfoComment>
-        <Actions>
-          <span>EDITAR</span>
-          <Button onClick={this.onRemove}>
-            Remover
-          </Button>
-        </Actions>
+        {authedUser === author &&
+          <Actions>
+            <Icon
+              type="edit"
+              onClick={() => {history.push(`${location.pathname}/comment/edit/${id}`)}}
+            />
+            <ModalDelete
+              text='comment'
+              onConfirm={this.onRemove}
+            />
+          </Actions>
+        }
       </Container>
     )
   }
 }
 
-function mapStateToProps({ comments }, { id }) {
+function mapStateToProps({ comments, authedUser }, { id }) {
   const comment = comments[id];
 
   return {
     comment: comment ? comment : null,
+    authedUser
   }
 }
 
@@ -72,4 +80,4 @@ const Actions = styled.div`
   flex-direction: column;
 `;
 
-export default connect(mapStateToProps)(Comment);
+export default connect(mapStateToProps)(withRouter(Comment));

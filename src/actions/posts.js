@@ -1,9 +1,15 @@
-import { voteOnAPost, deletePost } from '../utils/PostsAPI';
+import { message } from 'antd';
+import { voteOnAPost, deletePost, savePost, updatePost } from '../utils/PostsAPI';
+import { generateUID } from '../utils/utils';
 
 export const RECEIVE_POSTS = 'RECEIVE_POSTS';
 export const VOTE_POST = 'VOTE_POST';
+export const ADD_POST = 'ADD_POST';
+export const EDIT_POST = 'EDIT_POST';
 export const REMOVE_POST = 'REMOVE_POST';
 export const DECREASE_COMMENT_COUNTER = 'DECREASE_COMMENT_COUNTER';
+export const INCREASE_COMMENT_COUNTER = 'INCREASE_COMMENT_COUNTER';
+export const SORT_POST_LIST = 'SORT_POST_LIST';
 
 export function receivePosts(obj) {
   const posts = {};
@@ -30,11 +36,17 @@ function votePost({ id, option }) {
   }
 }
 
-export function onRemovePost(id) {
-  return dispatch => {
-    dispatch(removePost(id));
-    return deletePost(id);
-    //TODO: CATCH EXCEPTION E TALS
+function addPost(post) {
+  return {
+    type: ADD_POST,
+    post,
+  }
+}
+
+function editPost(post) {
+  return {
+    type: EDIT_POST,
+    post,
   }
 }
 
@@ -45,17 +57,62 @@ export function decreaseCommentCounter(id) {
   }
 }
 
+export function increaseCommentCounter(id) {
+  return {
+    type: INCREASE_COMMENT_COUNTER,
+    id
+  }
+}
+
+export function sortPostList(sort) {
+  return {
+    type: SORT_POST_LIST,
+    sort
+  }
+}
+
+export function handleAddPost(post) {
+  return (dispatch, getState) => {
+    const { authedUser } = getState();
+    savePost({
+      ...post,
+      author: authedUser,
+      timestamp: Date.now(),
+      id: generateUID()
+    }).then(post => {
+      dispatch(addPost(post));
+      message.success('Post added successfully!');
+    }).catch(() => message.error('There was a server error!'))
+  }
+}
+
+export function handleEditPost(post) {
+  return dispatch => {
+    updatePost(post)
+      .then(post => {
+        dispatch(editPost(post));
+        message.success('Post edited successfully!');
+      }).catch(() => message.error('There was a server error!'))
+  }
+}
+
+export function onRemovePost(id) {
+  return dispatch => {
+    dispatch(removePost(id));
+    return deletePost(id)
+      .then(() => message.success('Post removed successfully!'))
+      .catch(() => message.error('There was a server error!'))
+  }
+}
+
 export function handleVotePost(info) {
   return (dispatch) => {
     dispatch(votePost(info))
 
-    return voteOnAPost(info);
-
-    //TODO: CATCH
-    // .catch((e) => {
-    //   console.warn('Error in handleVotePost: ', e)
-    //   dispatch(toggleTweet(info))
-    //   alert('This was an error voting in a post. Try again.')
-    // })
+    return voteOnAPost(info)
+      .catch(() => {
+        dispatch(votePost(info !== 'upVote' ? 'upVote' : info));
+        message.error('There was a server error!');
+      });
   }
 }
