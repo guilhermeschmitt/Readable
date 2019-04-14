@@ -1,6 +1,6 @@
 import {
   RECEIVE_POSTS, REMOVE_POST, VOTE_POST, DECREASE_COMMENT_COUNTER,
-  INCREASE_COMMENT_COUNTER, ADD_POST, EDIT_POST
+  INCREASE_COMMENT_COUNTER, ADD_POST, EDIT_POST, SORT_POST_LIST
 } from '../actions/posts'
 
 export default function posts(state = {}, action) {
@@ -29,6 +29,11 @@ export default function posts(state = {}, action) {
       let newState = {};
       Object.keys(state).map(key => key !== action.id ? newState[key] = state[key] : null);
       return { ...newState }
+    case SORT_POST_LIST:
+      let newList = {};
+      let sortedState = Object.keys(state).sort((a, b) => state[b][action.sort] - state[a][action.sort]);
+      sortedState.map(id => newList[id] = state[id]);
+      return { ...newList };
     case INCREASE_COMMENT_COUNTER:
       return {
         ...state,

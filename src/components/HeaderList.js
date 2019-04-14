@@ -1,8 +1,10 @@
 import React from 'react';
 import { Button, Menu, Dropdown, Icon } from 'antd';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { sortPostList } from '../actions/posts';
 
-const HeaderList = ({title, renderOrder, buttonText, goTo}) => (
+const HeaderList = ({ title, renderOrder, buttonText, goTo, dispatch }) => (
   <Container>
     <Title>
       {title}
@@ -11,10 +13,13 @@ const HeaderList = ({title, renderOrder, buttonText, goTo}) => (
 
       {renderOrder &&
         <Dropdown overlay={
-          <Menu onClick={() => { }}>
-            <Menu.Item key="1">1st menu item</Menu.Item>
-            <Menu.Item key="2">2nd memu item</Menu.Item>
-            <Menu.Item key="3">3rd menu item</Menu.Item>
+          <Menu onClick={({ key }) => dispatch(sortPostList(key))}>
+            <Menu.Item key="voteScore">
+              Top Rated
+            </Menu.Item>
+            <Menu.Item key="timestamp">
+              Newest
+            </Menu.Item>
           </Menu>
         }>
           <span>
@@ -45,4 +50,4 @@ const Title = styled.div`
   font-weight: bold;
 `
 
-export default HeaderList;
+export default connect()(HeaderList);

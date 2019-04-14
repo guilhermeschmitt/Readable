@@ -9,6 +9,7 @@ export const EDIT_POST = 'EDIT_POST';
 export const REMOVE_POST = 'REMOVE_POST';
 export const DECREASE_COMMENT_COUNTER = 'DECREASE_COMMENT_COUNTER';
 export const INCREASE_COMMENT_COUNTER = 'INCREASE_COMMENT_COUNTER';
+export const SORT_POST_LIST = 'SORT_POST_LIST';
 
 export function receivePosts(obj) {
   const posts = {};
@@ -60,6 +61,13 @@ export function increaseCommentCounter(id) {
   return {
     type: INCREASE_COMMENT_COUNTER,
     id
+  }
+}
+
+export function sortPostList(sort) {
+  return {
+    type: SORT_POST_LIST,
+    sort
   }
 }
 

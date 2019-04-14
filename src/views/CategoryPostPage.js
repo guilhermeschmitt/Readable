@@ -16,11 +16,8 @@ class CategoryPostPage extends React.Component {
 
 function mapStateToProps({ posts }, { match }) {
   const { category } = match.params;
-
-  const postsFiltered = Object.keys(posts).filter(key => posts[key].category === category);
-
   return {
-    postsIds: postsFiltered.sort((a, b) => posts[b].voteScore - posts[a].voteScore)
+    postsIds: Object.keys(posts).filter(key => posts[key].category === category)
   }
 }
 
