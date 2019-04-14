@@ -32,7 +32,7 @@ class Post extends React.Component {
         <div>
           <UserInfo> Posted by {author} at {timestampToDate(timestamp)} </UserInfo>
           <Title>
-            <Link to={`/posts/${category}`}>
+            <Link to={`/${category}`}>
               <Tag className={category}> {category} </Tag>
             </Link>
             <Link to={`/${category}/${id}`}>

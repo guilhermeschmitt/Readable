@@ -3,8 +3,6 @@ import { List } from 'antd';
 import Comment from './Comment';
 import HeaderList from './HeaderList';
 
-
-//TODO: Tenho que fazer um loading pra cá
 const CommentsList = ({ comments, textHeader, goTo }) => {
   return (
     <React.Fragment>

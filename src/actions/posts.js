@@ -1,4 +1,5 @@
-import { voteOnAPost, deletePost, savePost } from '../utils/PostsAPI';
+import { message } from 'antd';
+import { voteOnAPost, deletePost, savePost, updatePost } from '../utils/PostsAPI';
 import { generateUID } from '../utils/utils';
 
 export const RECEIVE_POSTS = 'RECEIVE_POSTS';
@@ -41,23 +42,10 @@ function addPost(post) {
   }
 }
 
-export function handleAddPost(post) {
-  return (dispatch, getState) => {
-    const { authedUser } = getState();
-    savePost({
-      ...post,
-      author: authedUser,
-      timestamp: Date.now(),
-      id: generateUID()
-    }).then(post => dispatch(addPost(post)))
-  }
-}
-
-export function onRemovePost(id) {
-  return dispatch => {
-    dispatch(removePost(id));
-    return deletePost(id);
-    //TODO: CATCH EXCEPTION E TALS
+function editPost(post) {
+  return {
+    type: EDIT_POST,
+    post,
   }
 }
 
@@ -75,17 +63,48 @@ export function increaseCommentCounter(id) {
   }
 }
 
+export function handleAddPost(post) {
+  return (dispatch, getState) => {
+    const { authedUser } = getState();
+    savePost({
+      ...post,
+      author: authedUser,
+      timestamp: Date.now(),
+      id: generateUID()
+    }).then(post => {
+      dispatch(addPost(post));
+      message.success('Post adicionado com sucesso!');
+    }).catch(() => message.error('Ocorreu um erro no servidor!'))
+  }
+}
+
+export function handleEditPost(post) {
+  return dispatch => {
+    updatePost(post)
+      .then(post => {
+        dispatch(editPost(post));
+        message.success('Post editado com sucesso!');
+      }).catch(() => message.error('Ocorreu um erro no servidor!'))
+  }
+}
+
+export function onRemovePost(id) {
+  return dispatch => {
+    dispatch(removePost(id));
+    return deletePost(id)
+      .then(() => message.success('Post removido com sucesso!'))
+      .catch(() => message.error('Ocorreu um erro no servidor!'))
+  }
+}
+
 export function handleVotePost(info) {
   return (dispatch) => {
     dispatch(votePost(info))
 
-    return voteOnAPost(info);
-
-    //TODO: CATCH
-    // .catch((e) => {
-    //   console.warn('Error in handleVotePost: ', e)
-    //   dispatch(toggleTweet(info))
-    //   alert('This was an error voting in a post. Try again.')
-    // })
+    return voteOnAPost(info)
+      .catch(() => {
+        dispatch(votePost(info !== 'upVote' ? 'upVote' : info));
+        message.error('Ocorreu um erro no servidor!');
+      });
   }
 }

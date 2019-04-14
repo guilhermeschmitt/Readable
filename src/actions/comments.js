@@ -3,6 +3,7 @@ import { voteOnAComment, deleteComment, saveComment } from '../utils/CommentsAPI
 import { getPostComments } from '../utils/PostsAPI';
 import { increaseCommentCounter, decreaseCommentCounter } from '../actions/posts';
 import { generateUID } from '../utils/utils';
+import { message } from 'antd';
 
 export const RECEIVE_COMMENTS = 'RECEIVE_COMMENTS';
 export const ADD_COMMENT = 'ADD_COMMENT';
@@ -15,7 +16,7 @@ export function onReceiveComments(id) {
     dispatch(showLoading());
     getPostComments(id)
       .then(response => dispatch(receiveComments(response)))
-      .then(dispatch(hideLoading()))
+      .then(() => dispatch(hideLoading()))
   }
 }
 
@@ -35,21 +36,6 @@ function addComment(comment) {
   }
 }
 
-export function handleAddComment(comment, postId) {
-
-  return (dispatch, getState) => {
-    const { authedUser } = getState();
-    saveComment({
-      ...comment,
-      author: authedUser,
-      timestamp: Date.now(),
-      parentId: postId,
-      id: generateUID()
-    }).then(comment => dispatch(addComment(comment)))
-      .then(() => dispatch(increaseCommentCounter(postId)))
-  }
-}
-
 function removeComment(id) {
   return {
     type: REMOVE_COMMENT,
@@ -65,24 +51,43 @@ function voteComment({ id, option }) {
   }
 }
 
+export function handleAddComment(comment, postId) {
+  return (dispatch, getState) => {
+    const { authedUser } = getState();
+    saveComment({
+      ...comment,
+      author: authedUser,
+      timestamp: Date.now(),
+      parentId: postId,
+      id: generateUID()
+    }).then(comment => dispatch(addComment(comment)))
+      .then(() => {
+        dispatch(increaseCommentCounter(postId));
+        message.success('Comentário adicionado com sucesso!');
+      }).catch(() => message.error('Ocorreu um erro no servidor!'))
+  }
+}
+
 export function onRemoveComment(comment) {
   return dispatch => {
     dispatch(removeComment(comment.id));
+    dispatch(decreaseCommentCounter(comment.parentId));
     deleteComment(comment.id)
-      .then(() => dispatch(decreaseCommentCounter(comment.parentId)));
-    //TODO: CATCH EXCEPTION E TALS
+      .then(() => message.success('Comentário removido com sucesso!'))
+      .catch(() => {
+        message.error('Ocorreu um erro ao remover o comentário!')
+        dispatch(increaseCommentCounter(comment.parentId));
+      })
   }
 }
 
 export function handleVoteComment(info) {
   return (dispatch) => {
     dispatch(voteComment(info))
-    return voteOnAComment(info);
-    //TODO: CATCH
-    // .catch((e) => {
-    //   console.warn('Error in handleVotePost: ', e)
-    //   dispatch(toggleTweet(info))
-    //   alert('This was an error voting in a post. Try again.')
-    // })
+    return voteOnAComment(info)
+      .catch(() => {
+        dispatch(voteComment(info !== 'upVote' ? 'upVote' : info));
+        message.error('Ocorreu um erro no servidor!');
+      });
   }
 }

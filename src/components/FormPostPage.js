@@ -2,35 +2,20 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { Form } from 'formsy-semantic-ui-react';
-import { handleAddPost } from '../actions/posts';
-import FormComponent from '../components/FormComponent';
+
+import FormComponent from './FormComponent';
 
 class FormPostPage extends React.Component {
 
   state = {
-    title: '',
-    category: '',
-    body: '',
     toHome: false
   }
 
-  handleChange = e => {
-    const { name, value } = e.target;
-    this.setState(() => ({ [name]: value }))
-  }
-
-  categoryChange = category => {
-    this.setState(() => ({ category }))
-  }
-
-  savePost = () => {
-    const { dispatch } = this.props;
-    dispatch(handleAddPost(this.state));
+  onMainAction = () => {
+    const { onMainAction } = this.props;
+    onMainAction();
 
     this.setState(() => ({
-      title: '',
-      category: '',
-      body: '',
       toHome: true,
     }));
   }
@@ -43,13 +28,16 @@ class FormPostPage extends React.Component {
   }
 
   render() {
+
+    const { title, handleChange, category, categoryChange, body } = this.props;
+
     if (this.state.toHome === true)
       return <Redirect to='/' />
 
     return (
       <div>
         <FormComponent
-          onMainAction={this.savePost}
+          onMainAction={this.onMainAction}
           content={
             <>
               <Form.Input
@@ -57,8 +45,8 @@ class FormPostPage extends React.Component {
                 label='Title:'
                 name="title"
                 maxLength="100"
-                value={this.state.title}
-                onChange={this.handleChange}
+                value={title}
+                onChange={handleChange}
                 validations='maxLength:100'
                 validationErrors={{
                   isDefaultRequiredValue: 'Preenchimento obrigatório.',
@@ -66,23 +54,25 @@ class FormPostPage extends React.Component {
                 }}
                 errorLabel={<label />}
               />
-              <Form.Dropdown
-                label='Category:'
-                name='category'
-                required
-                selection
-                attributes={{ id: "id", descricao: "nome" }}
-                value={this.state.category}
-                options={this.options}
-                setValue={this.categoryChange}
-                validationErrors={{ isDefaultRequiredValue: 'Preenchimento obrigatório.' }}
-                errorLabel={<label />}
-              />
+              {(category !== undefined && categoryChange !== undefined) &&
+                <Form.Dropdown
+                  label='Category:'
+                  name='category'
+                  required
+                  selection
+                  attributes={{ id: "id", descricao: "nome" }}
+                  value={category}
+                  options={this.options}
+                  setValue={categoryChange}
+                  validationErrors={{ isDefaultRequiredValue: 'Preenchimento obrigatório.' }}
+                  errorLabel={<label />}
+                />
+              }
               <Form.TextArea
                 label="Post:"
                 name="body"
-                value={this.state.body}
-                onChange={this.handleChange}
+                value={body}
+                onChange={handleChange}
                 required
                 maxLength={2000}
                 validations="maxLength:2000"

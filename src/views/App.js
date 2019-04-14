@@ -5,8 +5,9 @@ import LoadingBar from 'react-redux-loading';
 import PostsPage from './PostsPage';
 import CategoryPostPage from './CategoryPostPage';
 import DetailedPostPage from './DetailedPostPage';
-import FormPostPage from './FormPostPage';
+import NewPostPage from './NewPostPage';
 import FormCommentPage from './FormCommentPage';
+import EditPostPage from './EditPostPage';
 import Nav from '../components/Nav';
 import { handleInitialData } from '../actions/shared';
 
@@ -27,9 +28,10 @@ class App extends Component {
               :
               <Switch>
                 <Route path='/' exact component={PostsPage} />
-                <Route path='/new/post' component={FormPostPage} />
-                <Route path='/posts/:category' exact component={CategoryPostPage} />
+                <Route path='/new/post' component={NewPostPage} />
+                <Route path='/:category' exact component={CategoryPostPage} />
                 <Route path='/:category/:id' exact component={DetailedPostPage} />
+                <Route path='/:category/:id/edit' exact component={EditPostPage} />
                 <Route path='/:category/:id/new/comment' component={FormCommentPage} />
               </Switch>
             }
@@ -42,8 +44,6 @@ class App extends Component {
 
 
 function mapStateToProps({ authedUser }) {
-  console.log(authedUser);
-
   return {
     loading: authedUser === null
   }

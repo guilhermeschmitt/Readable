@@ -48,6 +48,7 @@ class DetailedPostPage extends React.Component {
           body={post.body}
           onVote={this.handleVote}
           onRemove={this.onRemove}
+          onEdit={() => {history.push(`${location.pathname}/edit`)}}
           authedUser={authedUser}
         />
 
@@ -66,7 +67,7 @@ class DetailedPostPage extends React.Component {
   }
 }
 
-const DetailedPost = ({ voteScore, title, author, timestamp, body, onVote, onRemove, authedUser }) => (
+const DetailedPost = ({ voteScore, title, author, timestamp, body, onVote, onRemove, authedUser, onEdit }) => (
   <Container>
     <VoteScore
       score={voteScore}
@@ -85,7 +86,7 @@ const DetailedPost = ({ voteScore, title, author, timestamp, body, onVote, onRem
       <Actions>
         <Icon
           type="edit"
-          onClick={() => console.log("TODO:")}
+          onClick={onEdit}
         />
         <ModalDelete
           text='post'

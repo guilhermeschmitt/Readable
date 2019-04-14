@@ -1,5 +1,6 @@
 import React from 'react';
 import { List } from 'antd';
+import { connect } from 'react-redux';
 import Post from './Post';
 import HeaderList from './HeaderList';
 
@@ -26,4 +27,4 @@ const PostList = ({ posts, goTo }) => {
   )
 }
 
-export default PostList;
+export default connect()(PostList);

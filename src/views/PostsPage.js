@@ -13,10 +13,14 @@ class PostsPage extends React.Component {
   }
 }
 
-function mapStateToProps({ posts }) {
+function mapStateToProps(state) {
+  const { posts } = state;
+
+  // https://github.com/reduxjs/reselect
+  //ACHO QUE POSSO FAZER ESSE SORT NA LISTA, porque não é obrigatório vir ordenado assim
+
   return {
-    postsIds: Object.keys(posts)
-      .sort((a, b) => posts[b].voteScore - posts[a].voteScore)
+    postsIds: Object.keys(posts).sort((a, b) => posts[b].voteScore - posts[a].voteScore)
   }
 }
 
