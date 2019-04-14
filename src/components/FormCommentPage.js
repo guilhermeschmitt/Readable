@@ -34,8 +34,8 @@ class FormCommentPage extends React.Component {
               maxLength={2000}
               validations="maxLength:2000"
               validationErrors={{
-                isDefaultRequiredValue: 'Preenchimento obrigatório',
-                maxLength: "Utiliza-se, no máximo, 2000 caracteres para o campo descrição"
+                isDefaultRequiredValue: 'Required field',
+                maxLength: "A maximum of 2000 characters is used for this field."
               }}
               errorLabel={<label />}
             />

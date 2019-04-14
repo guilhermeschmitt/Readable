@@ -36,7 +36,7 @@ class EditPostPage extends React.Component {
 
   render() {
     if (!this.props.post) {
-      message.warning('Nenhum post com esse id!');
+      message.warning('No posts with this id!');
       return <Redirect to={'/'} />
     }
 

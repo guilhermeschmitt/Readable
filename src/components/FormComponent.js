@@ -18,7 +18,7 @@ class FormComponent extends React.Component {
   }
 
   generateErrorMessages = () => {
-    this.form.formsyForm.inputs.forEach((element, index) => {
+    this.form.formsyForm.inputs.forEach(element => {
       if (!element.isValid())
         message.error(`${element.props.label} - ${element.getErrorMessages()[0]}`);
     });

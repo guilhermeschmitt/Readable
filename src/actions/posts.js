@@ -73,8 +73,8 @@ export function handleAddPost(post) {
       id: generateUID()
     }).then(post => {
       dispatch(addPost(post));
-      message.success('Post adicionado com sucesso!');
-    }).catch(() => message.error('Ocorreu um erro no servidor!'))
+      message.success('Post added successfully!');
+    }).catch(() => message.error('There was a server error!'))
   }
 }
 
@@ -83,8 +83,8 @@ export function handleEditPost(post) {
     updatePost(post)
       .then(post => {
         dispatch(editPost(post));
-        message.success('Post editado com sucesso!');
-      }).catch(() => message.error('Ocorreu um erro no servidor!'))
+        message.success('Post edited successfully!');
+      }).catch(() => message.error('There was a server error!'))
   }
 }
 
@@ -92,8 +92,8 @@ export function onRemovePost(id) {
   return dispatch => {
     dispatch(removePost(id));
     return deletePost(id)
-      .then(() => message.success('Post removido com sucesso!'))
-      .catch(() => message.error('Ocorreu um erro no servidor!'))
+      .then(() => message.success('Post removed successfully!'))
+      .catch(() => message.error('There was a server error!'))
   }
 }
 
@@ -104,7 +104,7 @@ export function handleVotePost(info) {
     return voteOnAPost(info)
       .catch(() => {
         dispatch(votePost(info !== 'upVote' ? 'upVote' : info));
-        message.error('Ocorreu um erro no servidor!');
+        message.error('There was a server error!');
       });
   }
 }

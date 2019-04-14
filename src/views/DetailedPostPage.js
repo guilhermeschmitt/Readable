@@ -36,7 +36,7 @@ class DetailedPostPage extends React.Component {
     const { post, commentsIds, history, location, authedUser } = this.props;
 
     if (!post)
-      return <div>Página 404</div>
+      return <div>Page 404</div>
 
     return (
       <div>
@@ -56,7 +56,7 @@ class DetailedPostPage extends React.Component {
           comments={commentsIds}
           textHeader={
             <span>
-              <Icon type='message' /> Comentários ({post.commentCount})
+              <Icon type='message' /> Comments ({post.commentCount})
             </span>
           }
           goTo={() => { history.push(`${location.pathname}/comment/new`) }}

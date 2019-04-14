@@ -33,7 +33,7 @@ class EditCommentPage extends React.Component {
     const {comment, match} = this.props;
 
     if (!comment) {
-      message.warning('Comentário indisponível!');
+      message.warning('Comment unavailable!');
       return <Redirect to={`/${match.params.category}/${match.params.id}`} />
     }
 

@@ -49,8 +49,8 @@ class FormPostPage extends React.Component {
                 onChange={handleChange}
                 validations='maxLength:100'
                 validationErrors={{
-                  isDefaultRequiredValue: 'Preenchimento obrigatório.',
-                  maxLength: 'Número máximo de caracteres é 100.'
+                  isDefaultRequiredValue: 'Required field',
+                  maxLength: 'Maximum number of characters is 100.'
                 }}
                 errorLabel={<label />}
               />
@@ -64,7 +64,7 @@ class FormPostPage extends React.Component {
                   value={category}
                   options={this.options}
                   setValue={categoryChange}
-                  validationErrors={{ isDefaultRequiredValue: 'Preenchimento obrigatório.' }}
+                  validationErrors={{ isDefaultRequiredValue: 'Required field' }}
                   errorLabel={<label />}
                 />
               }
@@ -77,8 +77,8 @@ class FormPostPage extends React.Component {
                 maxLength={2000}
                 validations="maxLength:2000"
                 validationErrors={{
-                  isDefaultRequiredValue: 'Preenchimento obrigatório',
-                  maxLength: "Utiliza-se, no máximo, 2000 caracteres para o campo descrição"
+                  isDefaultRequiredValue: 'Required field.',
+                  maxLength: "A maximum of 2000 characters is used for this field."
                 }}
                 errorLabel={<label />}
               />

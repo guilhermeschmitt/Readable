@@ -18,7 +18,7 @@ const HeaderList = ({title, renderOrder, buttonText, goTo}) => (
           </Menu>
         }>
           <span>
-            Ordenar posts <Icon type="down" />
+            Order by <Icon type="down" />
           </span>
         </Dropdown>
       }

@@ -70,8 +70,8 @@ export function handleAddComment(comment, postId) {
     }).then(comment => dispatch(addComment(comment)))
       .then(() => {
         dispatch(increaseCommentCounter(postId));
-        message.success('Comentário adicionado com sucesso!');
-      }).catch(() => message.error('Ocorreu um erro no servidor!'))
+        message.success('Comment added successfully!');
+      }).catch(() => message.error('There was a server error!'))
   }
 }
 
@@ -83,8 +83,8 @@ export function handleEditComment(comment) {
       body: comment.body
     }).then(comment => {
       dispatch(editComment(comment));
-      message.success('Comment editado com sucesso!');
-    }).catch(() => message.error('Ocorreu um erro no servidor!'))
+      message.success('Comment edited successfully!');
+    }).catch(() => message.error('There was a server error!'))
   }
 }
 
@@ -93,7 +93,7 @@ export function onRemoveComment(comment) {
     dispatch(removeComment(comment.id));
     dispatch(decreaseCommentCounter(comment.parentId));
     deleteComment(comment.id)
-      .then(() => message.success('Comentário removido com sucesso!'))
+      .then(() => message.success('Comment removed successfully!'))
       .catch(() => {
         message.error('Ocorreu um erro ao remover o comentário!')
         dispatch(increaseCommentCounter(comment.parentId));
@@ -107,7 +107,7 @@ export function handleVoteComment(info) {
     return voteOnAComment(info)
       .catch(() => {
         dispatch(voteComment(info !== 'upVote' ? 'upVote' : info));
-        message.error('Ocorreu um erro no servidor!');
+        message.error('There was a server error!');
       });
   }
 }
