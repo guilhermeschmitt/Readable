@@ -13,7 +13,7 @@ const HeaderList = ({ title, renderOrder, buttonText, goTo, dispatch }) => (
 
       {renderOrder &&
         <Dropdown overlay={
-          <Menu onClick={({ key }) => dispatch(sortPostList(key))}>
+          <Menu onClick={({ key }) => dispatch(sortPostList(key))} >
             <Menu.Item key="voteScore">
               Top Rated
             </Menu.Item>
@@ -22,7 +22,7 @@ const HeaderList = ({ title, renderOrder, buttonText, goTo, dispatch }) => (
             </Menu.Item>
           </Menu>
         }>
-          <span>
+          <span style={{ marginRight: '2vw' }} >
             Order by <Icon type="down" />
           </span>
         </Dropdown>

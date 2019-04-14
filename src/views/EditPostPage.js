@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { message } from 'antd';
+import { message, Icon } from 'antd';
 import FormPostPage from '../components/FormPostPage';
 import { handleEditPost } from '../actions/posts';
 
@@ -15,7 +15,7 @@ class EditPostPage extends React.Component {
   componentDidMount() {
     const { post } = this.props;
     if (post)
-      this.setState(() => ({...post }));
+      this.setState(() => ({ ...post }));
   }
 
   handleChange = e => {
@@ -42,6 +42,8 @@ class EditPostPage extends React.Component {
 
     return (
       <FormPostPage
+        icon={<Icon type='edit' />}
+        text='EDIT POST'
         onMainAction={this.editPost}
         title={this.state.title}
         handleChange={this.handleChange}

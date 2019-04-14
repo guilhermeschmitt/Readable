@@ -81,13 +81,13 @@ const Title = styled.div`
     border-color: #ffadd2;
   }
 
-  .outro{
+  .redux{
     color: #2f54eb;
     background: #f0f5ff;
     border-color: #adc6ff;
   }
 
-  .outro2{
+  .udacity{
     color: #52c41a;
     background: #f6ffed;
     border-color: #b7eb8f;

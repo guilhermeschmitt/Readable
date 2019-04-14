@@ -1,6 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { Form } from 'formsy-semantic-ui-react';
+import styled from 'styled-components';
 import FormComponent from './FormComponent';
 
 class FormCommentPage extends React.Component {
@@ -15,13 +16,16 @@ class FormCommentPage extends React.Component {
   }
 
   render() {
-    const { body, handleChange, postId, category } = this.props;
+    const { body, handleChange, postId, category, icon, text } = this.props;
     
     if (this.state.toPost === true)
       return <Redirect to={`/${category}/${postId}`} />
 
     return (
       <div>
+        <Title>
+          {icon} {text}
+        </Title>
         <FormComponent
           onMainAction={this.onMainAction}
           content={
@@ -46,5 +50,10 @@ class FormCommentPage extends React.Component {
     );
   }
 }
+
+const Title = styled.span`
+  font-size: 2em;
+  font-weight: bold;
+`;
 
 export default FormCommentPage;

@@ -23,7 +23,7 @@ class App extends Component {
         <div>
           <LoadingBar />
           <Nav />
-          <div>
+          <div style={{margin: '2vh 2vw 0px 5vw'}}>
             {this.props.loading === true
               ? null
               :

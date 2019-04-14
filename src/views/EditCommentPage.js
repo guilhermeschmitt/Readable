@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { message } from 'antd';
+import { message, Icon } from 'antd';
 import { handleEditComment } from '../actions/comments';
 import FormCommentPage from '../components/FormCommentPage';
 
-//FIXME: Se o usuário vem pela URL, o comentário não aparece!
+//FIXME: If user accesses address through URL, I can not edit because comment is not in store
 
 class EditCommentPage extends React.Component {
   state = {
@@ -30,7 +30,7 @@ class EditCommentPage extends React.Component {
   }
 
   render() {
-    const {comment, match} = this.props;
+    const { comment, match } = this.props;
 
     if (!comment) {
       message.warning('Comment unavailable!');
@@ -39,6 +39,8 @@ class EditCommentPage extends React.Component {
 
     return (
       <FormCommentPage
+        icon={<Icon type='edit' />}
+        text='EDIT COMMENT'
         onMainAction={this.editComment}
         body={this.state.body}
         handleChange={this.handleChange}

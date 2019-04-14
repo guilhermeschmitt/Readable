@@ -10,11 +10,6 @@ import ModalDelete from '../components/ModalDelete';
 import { timestampToDate } from '../utils/utils';
 
 class DetailedPostPage extends React.Component {
-  /* 
-  TODO: Colocar um efeito on hover nos ícones depois, quando jogar o estilo todo pro css
-  TODO: Após remover, da um push pra alguma outra página
-  */
-
   componentDidMount() {
     const { match, dispatch } = this.props;
     dispatch(onReceiveComments(match.params.id))
@@ -27,9 +22,10 @@ class DetailedPostPage extends React.Component {
   }
 
   onRemove = event => {
-    const { dispatch, post } = this.props;
+    const { dispatch, post, history } = this.props;
     event.preventDefault();
     dispatch(onRemovePost(post.id));
+    history.push('/');
   }
 
   render() {

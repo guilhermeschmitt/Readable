@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { Form } from 'formsy-semantic-ui-react';
-
+import styled from 'styled-components';
 import FormComponent from './FormComponent';
 
 class FormPostPage extends React.Component {
@@ -29,13 +29,16 @@ class FormPostPage extends React.Component {
 
   render() {
 
-    const { title, handleChange, category, categoryChange, body } = this.props;
+    const { title, handleChange, category, categoryChange, body, text, icon } = this.props;
 
     if (this.state.toHome === true)
       return <Redirect to='/' />
 
     return (
       <div>
+        <Title>
+          {icon} {text}
+        </Title>
         <FormComponent
           onMainAction={this.onMainAction}
           content={
@@ -90,6 +93,11 @@ class FormPostPage extends React.Component {
     );
   }
 }
+
+const Title = styled.span`
+  font-size: 2em;
+  font-weight: bold;
+`;
 
 function mapStateToProps({ categories }) {
   return { categories }
