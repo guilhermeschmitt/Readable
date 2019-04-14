@@ -6,8 +6,9 @@ import PostsPage from './PostsPage';
 import CategoryPostPage from './CategoryPostPage';
 import DetailedPostPage from './DetailedPostPage';
 import NewPostPage from './NewPostPage';
-import FormCommentPage from './FormCommentPage';
 import EditPostPage from './EditPostPage';
+import NewCommentPage from './NewCommentPage';
+import EditCommentPage from './EditCommentPage';
 import Nav from '../components/Nav';
 import { handleInitialData } from '../actions/shared';
 
@@ -32,7 +33,8 @@ class App extends Component {
                 <Route path='/:category' exact component={CategoryPostPage} />
                 <Route path='/:category/:id' exact component={DetailedPostPage} />
                 <Route path='/:category/:id/edit' exact component={EditPostPage} />
-                <Route path='/:category/:id/new/comment' component={FormCommentPage} />
+                <Route path='/:category/:id/comment/new' component={NewCommentPage} />
+                <Route path='/:category/:id/comment/edit/:idcomment' component={EditCommentPage} />
               </Switch>
             }
           </div>

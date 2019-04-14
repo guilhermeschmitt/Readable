@@ -59,7 +59,7 @@ class DetailedPostPage extends React.Component {
               <Icon type='message' /> Comentários ({post.commentCount})
             </span>
           }
-          goTo={() => { history.push(`${location.pathname}/new/comment`) }}
+          goTo={() => { history.push(`${location.pathname}/comment/new`) }}
         />
 
       </div>

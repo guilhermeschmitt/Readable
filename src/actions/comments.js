@@ -1,5 +1,5 @@
 import { showLoading, hideLoading } from 'react-redux-loading';
-import { voteOnAComment, deleteComment, saveComment } from '../utils/CommentsAPI';
+import { voteOnAComment, deleteComment, saveComment, updateComment } from '../utils/CommentsAPI';
 import { getPostComments } from '../utils/PostsAPI';
 import { increaseCommentCounter, decreaseCommentCounter } from '../actions/posts';
 import { generateUID } from '../utils/utils';
@@ -12,7 +12,7 @@ export const VOTE_COMMENT = 'VOTE_COMMENT';
 export const REMOVE_COMMENT = 'REMOVE_COMMENT';
 
 export function onReceiveComments(id) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch(showLoading());
     getPostComments(id)
       .then(response => dispatch(receiveComments(response)))
@@ -32,6 +32,13 @@ export function receiveComments(obj) {
 function addComment(comment) {
   return {
     type: ADD_COMMENT,
+    comment,
+  }
+}
+
+function editComment(comment) {
+  return {
+    type: EDIT_COMMENT,
     comment,
   }
 }
@@ -65,6 +72,19 @@ export function handleAddComment(comment, postId) {
         dispatch(increaseCommentCounter(postId));
         message.success('Comentário adicionado com sucesso!');
       }).catch(() => message.error('Ocorreu um erro no servidor!'))
+  }
+}
+
+export function handleEditComment(comment) {
+  return dispatch => {
+    updateComment({
+      id: comment.id,
+      timestamp: Date.now(),
+      body: comment.body
+    }).then(comment => {
+      dispatch(editComment(comment));
+      message.success('Comment editado com sucesso!');
+    }).catch(() => message.error('Ocorreu um erro no servidor!'))
   }
 }
 

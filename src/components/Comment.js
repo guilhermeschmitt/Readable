@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from "react-router";
 import styled from 'styled-components';
 import { Icon } from 'antd';
 import VoteScore from './VoteScore';
@@ -22,8 +23,8 @@ class Comment extends React.Component {
   }
 
   render() {
-    const { voteScore, body, author, timestamp } = this.props.comment;
-    const { authedUser } = this.props;
+    const { voteScore, body, author, timestamp, id } = this.props.comment;
+    const { authedUser, history, location } = this.props;
     return (
       <Container>
         <VoteScore
@@ -38,7 +39,7 @@ class Comment extends React.Component {
           <Actions>
             <Icon
               type="edit"
-              onClick={() => console.log("TODO:")}
+              onClick={() => {history.push(`${location.pathname}/comment/edit/${id}`)}}
             />
             <ModalDelete
               text='comment'
@@ -79,4 +80,4 @@ const Actions = styled.div`
   flex-direction: column;
 `;
 
-export default connect(mapStateToProps)(Comment);
+export default connect(mapStateToProps)(withRouter(Comment));

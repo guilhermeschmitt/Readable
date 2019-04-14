@@ -1,48 +1,35 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { Form } from 'formsy-semantic-ui-react';
-import FormComponent from '../components/FormComponent';
-import { handleAddComment } from '../actions/comments';
+import FormComponent from './FormComponent';
 
 class FormCommentPage extends React.Component {
 
   state = {
-    body: '',
     toPost: false,
   }
 
-  handleChange = e => {
-    const { name, value } = e.target;
-    this.setState(() => ({ [name]: value }))
-  }
-
-  saveComment = () => {
-    const { dispatch, match } = this.props;
-    dispatch(handleAddComment(this.state, match.params.id));
-    
-    this.setState(() => ({
-      body: '',
-      toPost: true,
-    }));
+  onMainAction = () => {
+    this.props.onMainAction();
+    this.setState(() => ({ toPost: true }));
   }
 
   render() {
-    const { category, id } = this.props.match.params;
-
+    const { body, handleChange, postId, category } = this.props;
+    
     if (this.state.toPost === true)
-      return <Redirect to={`/${category}/${id}`} />
+      return <Redirect to={`/${category}/${postId}`} />
 
     return (
       <div>
         <FormComponent
-          onMainAction={this.saveComment}
+          onMainAction={this.onMainAction}
           content={
             <Form.TextArea
               label="Comment:"
               name="body"
-              value={this.state.body}
-              onChange={this.handleChange}
+              value={body}
+              onChange={handleChange}
               required
               maxLength={2000}
               validations="maxLength:2000"
@@ -60,4 +47,4 @@ class FormCommentPage extends React.Component {
   }
 }
 
-export default connect()(FormCommentPage);
+export default FormCommentPage;
