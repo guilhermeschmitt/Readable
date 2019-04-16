@@ -19,7 +19,8 @@ Clone, install and start the front-end application:
 
 #### Authed user
 
-This application is anonymous, without authentication or authorization, however, an authenticated user schema has been implemented in the shared action. The AUTHED_ID is placed manually, and is only used to simulate an authenticated user in the system, from it the author of the comment / post is validated.
+This application is anonymous, without authentication or authorization.However, an authenticated user schema has been implemented in the shared action. The AUTHED_ID is placed manually, and is only used to simulate an authenticated user in the system, from it the author of the comment / post is validated.
+
 
 #### Comments
 
